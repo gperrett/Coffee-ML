@@ -1,3 +1,5 @@
+import pandas as pd
+import numpy as np
 from sklearn.decomposition import PCA
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -29,16 +31,26 @@ reduced = pca.fit_transform(select)
 reduced_df = pd.DataFrame(reduced)
 
 
-select = pd.concat([df[['Country.of.Origin', 'Processing.Method','Total.Cup.Points']], select], axis = 1)
+select = pd.concat([df[['Country.of.Origin', 'Processing.Method','Cupper.Points']], select], axis = 1)
 
 plot_df = pd.melt(select,id_vars = list(select.columns)[0:3] , value_vars= list(select.columns)[3:12])
 
-plot_df = plot_df[(plot_df['Total.Cup.Points'] > 0)& (plot_df['value'] > 0)]
+plot_df = plot_df[(plot_df['Cupper.Points'] > 0)& (plot_df['value'] > 0)]
 
 g = sns.FacetGrid(plot_df, col = 'variable', col_wrap=3).add_legend()
-g.map_dataframe(sns.regplot,x= 'value', y = 'Total.Cup.Points', x_jitter=.2, y_jitter=.1)
+g.map_dataframe(sns.regplot,x= 'value', y = 'Cupper.Points', x_jitter=.2, y_jitter=.1)
 g.add_legend()
 
 
-sns.kdeplot(df['Total.Cup.Points'],hue = df['Country.of.Origin'], shade = True,legend = 2)
+sns.kdeplot(df['Cupper.Points'],hue = df['Country.of.Origin'])
+
+g = sns.FacetGrid(plot_df, col = 'Country.of.Origin', col_wrap = 4).add_legend()
+g.map_dataframe(sns.kdeplot, x = 'Cupper.Points')
+g.add_legend()
+
+sns.boxplot(x = "Cupper.Points", y = "Country.of.Origin", data = plot_df)
+sns.boxplot(x = "Cupper.Points", y = "Country.of.Origin", data = plot_df)
+
+
+sns.violinplot(y = 'Country.of.Origin', x = "Cupper.Points", data = df)
 sns.violinplot(x = "variable", y = "value", data = plot_df)
