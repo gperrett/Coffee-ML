@@ -73,15 +73,12 @@ names = list(num_attributes) + list(full_pipeline.named_transformers_['cat']['on
 reg = LassoCV(cv = 5,n_alphas = 10000, n_jobs = -1, random_state = 1234).fit(train, y_train)
 coefficents = pd.DataFrame(reg.coef_, names)
 selected = coefficents[coefficents[0]!=0]
-selected.columns = ['Feature']
+selected.columns = ['Weight']
 
 preds = reg.predict(test)
-mrse = mean_squared_error(preds, y_test)
+rmse = mean_squared_error(preds, y_test)
 
 
-
-
-lasso_fit = lasso(train = train, test = test)
 lasso = Lasso(max_iter = 10000)
 coefs = []
 

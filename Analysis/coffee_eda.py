@@ -12,7 +12,7 @@ c = pd.DataFrame(df['Country.of.Origin'].value_counts() < 20)
 c = c[c['Country.of.Origin'] == True]
 c = list(c.index)
 df['Country.of.Origin'] = df['Country.of.Origin'].replace(c, 'Other')
-
+df['Country.of.Origin'] = df['Country.of.Origin'].replace("Tanzania, United Republic Of", 'Tanzania')
 
 select = df.loc[:,'Aroma':'Sweetness']
 
@@ -44,13 +44,9 @@ g.add_legend()
 
 sns.kdeplot(df['Cupper.Points'],hue = df['Country.of.Origin'])
 
-g = sns.FacetGrid(plot_df, col = 'Country.of.Origin', col_wrap = 4).add_legend()
-g.map_dataframe(sns.kdeplot, x = 'Cupper.Points')
-g.add_legend()
 
-sns.boxplot(x = "Cupper.Points", y = "Country.of.Origin", data = plot_df)
-sns.boxplot(x = "Cupper.Points", y = "Country.of.Origin", data = plot_df)
-
+sns.boxplot(x = "Cupper.Points", y = "Country.of.Origin", data = plot_df).set_title('Summary of Country of Origin')
+sns.boxplot(x = 'Cupper.Points', y = 'Processing.Method', data = plot_df).set_title('Summary of Processing Method')
 
 sns.violinplot(y = 'Country.of.Origin', x = "Cupper.Points", data = df)
 sns.violinplot(x = "variable", y = "value", data = plot_df)
